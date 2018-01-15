@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657993, g: 0.49641424, b: 0.57481825, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657934, g: 0.4964134, b: 0.5748173, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -143,8 +143,8 @@ MonoBehaviour:
   ROTATION_INCREASE_PER_SECOND: 90
   MAX_ROTATION_PER_SECOND: 720
   SNAP_INTERVAL_IN_MINUTES: 15
-  SNAP_THRESHOLD: 0.1
-  SNAP_SPEED_MULTIPLIER: 2
+  SNAP_THRESHOLD: 0.01
+  SNAP_SPEED_MULTIPLIER: 3
 --- !u!4 &2802882
 Transform:
   m_ObjectHideFlags: 0
