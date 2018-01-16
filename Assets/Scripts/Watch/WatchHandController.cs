@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 /// Author: Corwin Belser
 /// <summary>
@@ -31,6 +32,10 @@ public class WatchHandController : MonoBehaviour {
     [Range(0.005f,0.95f)]
     public float SNAP_THRESHOLD; /* % away from a snap interval that is acceptable to snap */
     public float SNAP_SPEED_MULTIPLIER; /* Multiplier when rotating towards snap point when player stops input */
+	
+	private Dictionary<int,UnityEvent> _eventDictionary = new Dictionary<int,UnityEvent>();
+	public List<int> KEYS;
+	public List<UnityEvent> VALUES;
 
     private Transform _minuteHand, _hourHand; /* References to the hour and minute hand child gameObjects */
     private float _rotationPerSecond; /* The current amount of rotation being applied each second */
@@ -42,6 +47,14 @@ public class WatchHandController : MonoBehaviour {
 	/// Gets a reference to the hour and minute hand gameObjects attached as children
 	/// </summary>
 	void Start () {
+		if(KEYS.Count != VALUES.Count)
+			Debug.LogError("The amount of keys and values for the event dictionary must be equal. Review the KEYS and VALUES lists.");
+		else{
+			for(int i = 0; i < KEYS.Count; i++){
+				_eventDictionary.Add(KEYS[i],VALUES[i]);
+			}
+		}
+		
         _hourHand = this.transform.GetChild(0); /* The first child gameObject is expected to be the hour hand */
         _minuteHand = this.transform.GetChild(1); /* The second child gameObject is expected to be the minute hand */
         _snapIntervalInDegrees = 360 * SNAP_INTERVAL_IN_MINUTES / 60; /* SNAP_INTERVAL_IN_MINUTES / 60 = _snapIntervalInDegrees / 360 */
@@ -110,10 +123,10 @@ public class WatchHandController : MonoBehaviour {
     /// <summary>
     /// Called when the watch stops at a _snapIntervalInDegrees
     /// </summary>
-    /// <TODO>Trigger Unity events set for this time interval</TODO>
     private void ProcessWatchEvents()
     {
         Debug.Log("Watch Time is " + GetWatchTimeInMinutes());
+		_eventDictionary[GetWatchTimeInMinutes()].Invoke();
     }
 
     /// <summary>
