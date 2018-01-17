@@ -65,25 +65,21 @@ public class WatchHandController : MonoBehaviour {
 	/// Check for player input, and apply movement to the watch hands
 	/// </summary>
 	void Update () {
-		if (Input.GetKey(KeyCode.RightArrow))
+		if (Input.GetAxis("Horizontal") != 0)
         {
+            Debug.Log(Input.GetAxis("Horizontal"));
             /* Increment the rotation speed */
-            _rotationPerSecond = Mathf.Min(MAX_ROTATION_PER_SECOND, _rotationPerSecond + ROTATION_INCREASE_PER_SECOND * Time.deltaTime);
+            _rotationPerSecond = Mathf.Min(MAX_ROTATION_PER_SECOND, _rotationPerSecond + (ROTATION_INCREASE_PER_SECOND * Input.GetAxis("Horizontal") * Time.deltaTime));
             _isMoving = true;
 
-        } else if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            /* Decrement the rotation speed */
-            _rotationPerSecond = Mathf.Max(-1 * MAX_ROTATION_PER_SECOND, _rotationPerSecond - ROTATION_INCREASE_PER_SECOND * Time.deltaTime);
-            _isMoving = true;
         }
         /* The player has stopped providing input. Check if the hands are at a stopping point, lerping if not */
         else if (_isMoving)
         {
-            Debug.Log("Snap Interval: " + _snapIntervalInDegrees + ", rotation: " + _minuteHand.localEulerAngles.y);
+            //Debug.Log("Snap Interval: " + _snapIntervalInDegrees + ", rotation: " + _minuteHand.localEulerAngles.y);
             /* if minute hand is at an interval of _snapIntervalInDegrees degrees (or super close), stop moving and process watch events for this time */
             float percentAwayFromSnap = _minuteHand.localEulerAngles.y % _snapIntervalInDegrees / _snapIntervalInDegrees;
-            Debug.Log("%: " + percentAwayFromSnap);
+            //Debug.Log("%: " + percentAwayFromSnap);
             if (percentAwayFromSnap < SNAP_THRESHOLD || percentAwayFromSnap > 1 - SNAP_THRESHOLD) 
             {
                 /* Find the closest snap interval */
