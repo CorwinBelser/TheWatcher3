@@ -67,7 +67,7 @@ public class WatchHandController : MonoBehaviour {
 	void Update () {
 		if (Input.GetAxis("Horizontal") != 0)
         {
-            Debug.Log(Input.GetAxis("Horizontal"));
+            //Debug.Log(Input.GetAxis("Horizontal"));
             /* Increment the rotation speed */
             _rotationPerSecond = Mathf.Min(MAX_ROTATION_PER_SECOND, _rotationPerSecond + (ROTATION_INCREASE_PER_SECOND * Input.GetAxis("Horizontal") * Time.deltaTime));
             _isMoving = true;
@@ -122,7 +122,8 @@ public class WatchHandController : MonoBehaviour {
     private void ProcessWatchEvents()
     {
         Debug.Log("Watch Time is " + GetWatchTimeInMinutes());
-		_eventDictionary[GetWatchTimeInMinutes()].Invoke();
+        if (_eventDictionary.ContainsKey(GetWatchTimeInMinutes()))
+		    _eventDictionary[GetWatchTimeInMinutes()].Invoke();
     }
 
     /// <summary>
@@ -132,6 +133,9 @@ public class WatchHandController : MonoBehaviour {
     /// <returns>[0,60) minute value of watch hand</returns>
     private int WatchHandRotationToTime(float rotation)
     {
+        float positiveRot = rotation;
+        while (positiveRot < 0)
+            positiveRot += 360;
         return Mathf.RoundToInt(rotation % 360 * _rotationToMinuteValue);
     }
 
@@ -141,6 +145,7 @@ public class WatchHandController : MonoBehaviour {
     /// <returns>current time in minutes on the watch </returns>
     private int GetWatchTimeInMinutes()
     {
-        return WatchHandRotationToTime(_hourHand.localEulerAngles.y) * 60 + WatchHandRotationToTime(_minuteHand.localEulerAngles.y);
+        //Debug.Log(_hourHand.localEulerAngles.y % 360 / 30);
+        return Mathf.FloorToInt(_hourHand.localEulerAngles.y % 360 / 30 + 0.1f) * 60 + WatchHandRotationToTime(_minuteHand.localEulerAngles.y);
     }
 }
