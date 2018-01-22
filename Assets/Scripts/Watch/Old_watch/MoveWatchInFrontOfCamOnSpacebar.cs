@@ -6,13 +6,23 @@ public class MoveWatchInFrontOfCamOnSpacebar : MonoBehaviour {
 	public Transform infrontpoint;
 	public Transform outofthewaypoint;
 
+    private static MoveWatchInFrontOfCamOnSpacebar _instance;
+
 	// -1 is lower1d
 	// 1 is raised
 	public int phase = 1;
 
-	// Use this for initialization
-	void Start () {
+    void Awake()
+    {
+        if (_instance != null)
+            Destroy(this.gameObject);
+        else
+            _instance = this;
+    }
 
+    // Use this for initialization
+    void Start () {
+        DontDestroyOnLoad(this.gameObject);
 	}
 
 	// Update is called once per frame
