@@ -4,4 +4,13 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/watch_test.unity
+    guid: b167ae267bfc3994d95297c016b82a4d
+  - enabled: 1
+    path: Assets/underbridge/waterbridge.unity
+    guid: a299c72099c921b43aca0897ce480d50
+  - enabled: 1
+    path: Assets/Scenes/CactusScene.unity
+    guid: 8f8109757d6035d4ba26797ab4e45e04

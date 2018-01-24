@@ -1,1 +1,12 @@
-CurrentProcessId = 47915
+<<<<<<< HEAD
+<<<<<<< HEAD
+CurrentProcessId = 14204
+ServerProcessID = 19236
+ServerSessionID = 1086326592
+HoudiniSceneExists = true
+=======
+CurrentProcessId = 20068
+>>>>>>> b896db6373f0ccbc3f16b12c611f5baa5d9b3b11
+=======
+CurrentProcessId = 7332
+>>>>>>> def47d47f0181574ab4ca9527f1f329d57136070

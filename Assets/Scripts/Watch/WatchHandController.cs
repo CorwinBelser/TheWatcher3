@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Sirenix.OdinInspector;
+using Sirenix.Serialization;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -13,17 +15,8 @@ using UnityEngine.Events;
 /// -   This script assumes the hour hand gameObject is the first child, the minute hand gameObject the second child object.
 /// -   The left and right arrow keys are used for movement. This is not multiplayer-safe, and should be pulled out to StartMovement(bool moveForward), and StopMovement()
 /// -   AM vs PM is not being handled. This could be added by utilizing mod with the total rotation (360 degrees being one hour)
-/// -   Holding both left and right arrow keys at the same time will only read input from the right arrow
 /// </remarks>
-/// <TODO>
-/// -   Create a hash table with watch time as the key, and a list of Unity events as the values
-///         -- Watch time could be stored and used in minute format for simplicity (Ex. 3:30 becomes 60*3 + 30 = 210
-///             --- Watch time in minutes has the range [0, 720]
-/// -   Implement snapping watch hands to the desired increment
-///         -- Watch hands should lerp to the target position
-///         -- Ideally the hands should decelerate smoothly, though using a joystick could provide better control over speed
-/// </TODO>
-public class WatchHandController : MonoBehaviour {
+public class WatchHandController : SerializedMonoBehaviour {
 
     public float ROTATION_INCREASE_PER_SECOND, MAX_ROTATION_PER_SECOND;
     [Range(1,60)]
@@ -32,16 +25,26 @@ public class WatchHandController : MonoBehaviour {
     [Range(0.005f,0.95f)]
     public float SNAP_THRESHOLD; /* % away from a snap interval that is acceptable to snap */
     public float SNAP_SPEED_MULTIPLIER; /* Multiplier when rotating towards snap point when player stops input */
-	
+    
+    /*
+     * Below is the ideal way of creating watch events. The next version of Odin Inspector properly
+     *  supports drawing UnityEvents, so this is commented out until (if) we update Odin
+     */
+    //[SerializeField]
+    //public List<WatchTimeEvent> WATCH_TIME_EVENTS; /* List of events to fire at set watch times */
+    [SerializeField]
+    public List<FloatUnityEvent> WATCH_MOTION_EVENTS; /* List of events to fire as watch time is changed */
+
 	private Dictionary<int,UnityEvent> _eventDictionary = new Dictionary<int,UnityEvent>();
 	public List<int> KEYS;
 	public List<UnityEvent> VALUES;
 
     private Transform _minuteHand, _hourHand; /* References to the hour and minute hand child gameObjects */
     private float _rotationPerSecond; /* The current amount of rotation being applied each second */
-    private float _hourHandRotationMultiplier = 30f / 360f; /* The hour hand moves 30 degrees for every 360 the minute hand travels */
+    private float _hourHandRotationMultiplier = 1f / 12f; /* The hour hand moves 1/12 as fast as the minute hand */
     private float _rotationToMinuteValue = 60f / 360f; /* Multiply to rotation [0, 360) to get the closest minute value [0,60) */
-    private bool _isMoving;
+    [HideInInspector]
+    public int MOVEMENT_DIRECTION; /* 1 for clockwise, -1 for counterclockwise, 0 for not moving */
 
 	/// <summary>
 	/// Gets a reference to the hour and minute hand gameObjects attached as children
@@ -58,7 +61,7 @@ public class WatchHandController : MonoBehaviour {
         _hourHand = this.transform.GetChild(0); /* The first child gameObject is expected to be the hour hand */
         _minuteHand = this.transform.GetChild(1); /* The second child gameObject is expected to be the minute hand */
         _snapIntervalInDegrees = 360 * SNAP_INTERVAL_IN_MINUTES / 60; /* SNAP_INTERVAL_IN_MINUTES / 60 = _snapIntervalInDegrees / 360 */
-        _isMoving = false; /* Initially no movement is applied */
+        MOVEMENT_DIRECTION = 0; /* Initially no movement is applied */
 	}
 	
 	/// <summary>
@@ -70,11 +73,11 @@ public class WatchHandController : MonoBehaviour {
             //Debug.Log(Input.GetAxis("Horizontal"));
             /* Increment the rotation speed */
             _rotationPerSecond = Mathf.Min(MAX_ROTATION_PER_SECOND, _rotationPerSecond + (ROTATION_INCREASE_PER_SECOND * Input.GetAxis("Horizontal") * Time.deltaTime));
-            _isMoving = true;
+            MOVEMENT_DIRECTION = (int)Mathf.Sign(Input.GetAxis("Horizontal"));
 
         }
         /* The player has stopped providing input. Check if the hands are at a stopping point, lerping if not */
-        else if (_isMoving)
+        else if (MOVEMENT_DIRECTION != 0)
         {
             //Debug.Log("Snap Interval: " + _snapIntervalInDegrees + ", rotation: " + _minuteHand.localEulerAngles.y);
             /* if minute hand is at an interval of _snapIntervalInDegrees degrees (or super close), stop moving and process watch events for this time */
@@ -86,13 +89,13 @@ public class WatchHandController : MonoBehaviour {
                 float snapPoint = Mathf.Round(_minuteHand.localEulerAngles.y % 360 / _snapIntervalInDegrees);
                 float rotationAmount = snapPoint * _snapIntervalInDegrees - _minuteHand.localEulerAngles.y;
                 /* Rotate the minute hand to the snap point */
-                _minuteHand.RotateAround(this.transform.position, this.transform.up, rotationAmount);
+                _minuteHand.Rotate(0f, rotationAmount, 0f);
 
-                /* Move the hour hand to its position relative to the minute hand */
-                _hourHand.RotateAround(this.transform.position, this.transform.up, _hourHandRotationMultiplier * rotationAmount);
+                /* Hour hand should be 1/12 the rotation of the minute hand */
+                _hourHand.Rotate(0f, rotationAmount * _hourHandRotationMultiplier, 0f);
 
                 _rotationPerSecond = 0f;
-                _isMoving = false;
+                MOVEMENT_DIRECTION = 0;
                 ProcessWatchEvents();
             }
             else /* else  lerp towards the nearest increment of SNAP_INTERVAL_IN_DEGREES */
@@ -106,13 +109,18 @@ public class WatchHandController : MonoBehaviour {
         }
 
         /* If there is rotation to be applied, move the hands */
-        if (_isMoving)
+        if (MOVEMENT_DIRECTION != 0)
         {
             /* Minute hands get full effect of speed */
-            _minuteHand.RotateAround(this.transform.position, this.transform.up, _rotationPerSecond * Time.deltaTime);
+            
+            _minuteHand.Rotate(0f, _rotationPerSecond * Time.deltaTime, 0f);
 
-            /* Hour hand gets a reduced rotation amount */
-            _hourHand.RotateAround(this.transform.position, this.transform.up, _hourHandRotationMultiplier * _rotationPerSecond * Time.deltaTime);
+            /* Hour hand should be 1/12 the rotation of the minute hand */
+            _hourHand.Rotate(0f, _rotationPerSecond * _hourHandRotationMultiplier * Time.deltaTime, 0f);
+
+
+            /* Process movement events */
+            ProcessMotionEvents();
         }
 	}
 
@@ -124,6 +132,12 @@ public class WatchHandController : MonoBehaviour {
         Debug.Log("Watch Time is " + GetWatchTimeInMinutes());
         if (_eventDictionary.ContainsKey(GetWatchTimeInMinutes()))
 		    _eventDictionary[GetWatchTimeInMinutes()].Invoke();
+    }
+
+    private void ProcessMotionEvents()
+    {
+        foreach (FloatUnityEvent e in WATCH_MOTION_EVENTS)
+            e.Invoke(MOVEMENT_DIRECTION);
     }
 
     /// <summary>
