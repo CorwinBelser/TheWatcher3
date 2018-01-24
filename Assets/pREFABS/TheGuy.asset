@@ -19,7 +19,7 @@ MonoBehaviour:
         scale: 1
       motionVectors:
         sourceOpacity: 1
-        motionImageOpacity: 0
+        motionImageOpacity: 1
         motionImageAmplitude: 16
         motionVectorsOpacity: 1
         motionVectorsResolution: 24
@@ -291,7 +291,7 @@ MonoBehaviour:
       colored: 1
       intensity: 0.377
       size: 1
-      luminanceContribution: 0.8
+      luminanceContribution: 0.63
   vignette:
     m_Enabled: 0
     m_Settings:
