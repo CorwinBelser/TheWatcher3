@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1213297752}
-  m_IndirectSpecularColor: {r: 0.92138636, g: 0.21166998, b: 0.478271, a: 1}
+  m_IndirectSpecularColor: {r: 0.92138636, g: 0.21166998, b: 0.48217833, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -219,6 +219,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114402979449618482, guid: 3c8156871251748d18c0edc07dabf0a2,
+        type: 2}
+      propertyPath: dialogue.sentences.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4046127235207996, guid: 3c8156871251748d18c0edc07dabf0a2, type: 2}
       propertyPath: m_LocalPosition.x
       value: -0.3082241
@@ -250,6 +255,72 @@ Prefab:
     - target: {fileID: 4046127235207996, guid: 3c8156871251748d18c0edc07dabf0a2, type: 2}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114139858503805914, guid: 3c8156871251748d18c0edc07dabf0a2,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: d15f05d282fd54ae48838e63c1adf58d,
+        type: 3}
+    - target: {fileID: 224690755064830756, guid: 3c8156871251748d18c0edc07dabf0a2,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 224690755064830756, guid: 3c8156871251748d18c0edc07dabf0a2,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 127
+      objectReference: {fileID: 0}
+    - target: {fileID: 224690755064830756, guid: 3c8156871251748d18c0edc07dabf0a2,
+        type: 2}
+      propertyPath: m_LocalScale.x
+      value: 0.46638188
+      objectReference: {fileID: 0}
+    - target: {fileID: 224690755064830756, guid: 3c8156871251748d18c0edc07dabf0a2,
+        type: 2}
+      propertyPath: m_LocalScale.y
+      value: 0.466382
+      objectReference: {fileID: 0}
+    - target: {fileID: 224690755064830756, guid: 3c8156871251748d18c0edc07dabf0a2,
+        type: 2}
+      propertyPath: m_LocalScale.z
+      value: 0.466382
+      objectReference: {fileID: 0}
+    - target: {fileID: 224890381760572478, guid: 3c8156871251748d18c0edc07dabf0a2,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: -34.78003
+      objectReference: {fileID: 0}
+    - target: {fileID: 224890381760572478, guid: 3c8156871251748d18c0edc07dabf0a2,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 413
+      objectReference: {fileID: 0}
+    - target: {fileID: 224890381760572478, guid: 3c8156871251748d18c0edc07dabf0a2,
+        type: 2}
+      propertyPath: m_LocalScale.x
+      value: 2.0016418
+      objectReference: {fileID: 0}
+    - target: {fileID: 224890381760572478, guid: 3c8156871251748d18c0edc07dabf0a2,
+        type: 2}
+      propertyPath: m_LocalScale.y
+      value: 2.0016422
+      objectReference: {fileID: 0}
+    - target: {fileID: 224890381760572478, guid: 3c8156871251748d18c0edc07dabf0a2,
+        type: 2}
+      propertyPath: m_LocalScale.z
+      value: 2.0016422
+      objectReference: {fileID: 0}
+    - target: {fileID: 114402979449618482, guid: 3c8156871251748d18c0edc07dabf0a2,
+        type: 2}
+      propertyPath: dialogue.sentences.Array.data[0]
+      value: 'Succulent is a narrative game where your choices have so much meaning '
+      objectReference: {fileID: 0}
+    - target: {fileID: 114402979449618482, guid: 3c8156871251748d18c0edc07dabf0a2,
+        type: 2}
+      propertyPath: dialogue.name
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3c8156871251748d18c0edc07dabf0a2, type: 2}
