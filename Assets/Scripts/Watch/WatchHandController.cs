@@ -89,13 +89,10 @@ public class WatchHandController : SerializedMonoBehaviour {
                 float snapPoint = Mathf.Round(_minuteHand.localEulerAngles.y % 360 / _snapIntervalInDegrees);
                 float rotationAmount = snapPoint * _snapIntervalInDegrees - _minuteHand.localEulerAngles.y;
                 /* Rotate the minute hand to the snap point */
-                _minuteHand.RotateAround(this.transform.position, this.transform.up, rotationAmount);
+                _minuteHand.Rotate(0f, rotationAmount, 0f);
 
                 /* Hour hand should be 1/12 the rotation of the minute hand */
-                _hourHand.localEulerAngles = new Vector3(
-                    _minuteHand.localEulerAngles.x,
-                    _minuteHand.localEulerAngles.y * _hourHandRotationMultiplier,
-                    _minuteHand.localEulerAngles.z);
+                _hourHand.Rotate(0f, rotationAmount * _hourHandRotationMultiplier, 0f);
 
                 _rotationPerSecond = 0f;
                 MOVEMENT_DIRECTION = 0;
@@ -115,13 +112,12 @@ public class WatchHandController : SerializedMonoBehaviour {
         if (MOVEMENT_DIRECTION != 0)
         {
             /* Minute hands get full effect of speed */
-            _minuteHand.RotateAround(this.transform.position, this.transform.up, _rotationPerSecond * Time.deltaTime);
+            
+            _minuteHand.Rotate(0f, _rotationPerSecond * Time.deltaTime, 0f);
 
             /* Hour hand should be 1/12 the rotation of the minute hand */
-            _hourHand.localEulerAngles = new Vector3(
-                    _minuteHand.localEulerAngles.x,
-                    _minuteHand.localEulerAngles.y * _hourHandRotationMultiplier,
-                    _minuteHand.localEulerAngles.z);
+            _hourHand.Rotate(0f, _rotationPerSecond * _hourHandRotationMultiplier * Time.deltaTime, 0f);
+
 
             /* Process movement events */
             ProcessMotionEvents();
