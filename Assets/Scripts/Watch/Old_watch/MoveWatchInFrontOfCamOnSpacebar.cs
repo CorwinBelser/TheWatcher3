@@ -23,6 +23,8 @@ public class MoveWatchInFrontOfCamOnSpacebar : MonoBehaviour {
     // Use this for initialization
     void Start () {
         DontDestroyOnLoad(this.gameObject);
+		DontDestroyOnLoad(infrontpoint.gameObject);
+		DontDestroyOnLoad(outofthewaypoint.gameObject);
 	}
 
 	// Update is called once per frame
