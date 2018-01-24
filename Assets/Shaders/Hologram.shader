@@ -58,6 +58,7 @@
 				v2f o;
 				v.vertex.x += sin(_Time.y * _Speed + v.vertex.y *_Amplitude) * _Distance * _Amount;
 				o.vertex = UnityObjectToClipPos(v.vertex);
+				//o.vertex.x += sin(_Time.y * _Speed + v.vertex.y *_Amplitude) * _Distance * _Amount;
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 				//UNITY_TRANSFER_FOG(o,o.vertex);
 				return o;
@@ -67,10 +68,11 @@
 			{
 				// sample the texture
 				fixed4 col = tex2D(_MainTex, i.uv) + _TintColor;
+				//fixed4 col = _TintColor;
 				col.a = _Transparency;
 				// apply fog
 				//UNITY_APPLY_FOG(i.fogCoord, col);
-				clip(col.r - _CutoutThresh);
+				//clip(col.r - _CutoutThresh);
 				return col;
 			}
 			ENDCG
