@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: SnowCacti
+  m_Shader: {fileID: 4800000, guid: 379882ab5c3159e49ac2e16502cb790f, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 78b029df79f21254d9777e8c1f6aad13, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Ramp:
+        m_Texture: {fileID: 2800000, guid: a7a5f2c16dd774776bf1d9d82cb24bb9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SnowRamp:
+        m_Texture: {fileID: 2800000, guid: d245f9671bf6842d48d1a304086ee00d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Height: 0
+    - _RimPower: 0.71
+    - _SnowSize: 0.87
+    m_Colors:
+    - _Color: {r: 0.58823526, g: 0.57970405, b: 0.53200686, a: 1}
+    - _RimColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _SnowAngle: {r: 0, g: 1, b: 0, a: 1}
+    - _SnowColor: {r: 0.41176468, g: 0.41176468, b: 0.41176468, a: 1}
+    - _TColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
